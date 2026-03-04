@@ -2,10 +2,14 @@ import os
 import numpy as np
 import pandas as pd
 
-CSV_PATH = os.path.join(
+# Allow overriding the data path via environment variable; fall back to the
+# sample CSV that lives two directories above the backend package root.
+_DEFAULT_CSV = os.path.join(
     os.path.dirname(__file__),
-    "../../../../data_science/data/sample_students.csv",
+    "..", "..", "..", "..",
+    "data_science", "data", "sample_students.csv",
 )
+CSV_PATH = os.environ.get("STUDENT_DATA_PATH", os.path.abspath(_DEFAULT_CSV))
 
 SCORE_COLUMNS = ["math_score", "reading_score", "writing_score", "science_score"]
 BEHAVIORAL_COLUMNS = ["study_hours_per_week", "attendance_rate", "sleep_hours"]

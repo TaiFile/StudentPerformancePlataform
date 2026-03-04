@@ -1,3 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+.eggs/
+venv/
+env/
+.venv/
+
+# Frontend build output
+frontend/dist/
+
 # Logs
 logs
 *.log

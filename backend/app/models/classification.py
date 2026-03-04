@@ -1,5 +1,4 @@
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import pandas as pd
@@ -27,13 +26,9 @@ def _build_model(df: pd.DataFrame):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Use all data for final model (small dataset), but split for validation
-    X_train, X_test, y_train, y_test = train_test_split(
-        X_scaled, y, test_size=0.2, random_state=42, stratify=y
-    )
-
+    # Train on all available data; dataset is small so full usage is preferred.
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    clf.fit(X_train, y_train)
+    clf.fit(X_scaled, y)
 
     return clf, scaler
 

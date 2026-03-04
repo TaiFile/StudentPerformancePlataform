@@ -23,23 +23,35 @@ CLUSTER_LABELS = [
 def _assign_label(centers: np.ndarray, cluster_idx: int) -> str:
     """Map KMeans cluster index to a human-readable profile label.
 
-    Rules (applied to scaled centres):
-    - Lowest average score + moderate engagement → Defasagem de Base
-    - Lowest study hours + low attendance → Falta de Engajamento
-    - Middle performance but low concept scores → Dificuldade Conceitual
+    Assigns labels based on cluster centre characteristics (in scaled space):
+    - Lowest average score → "Defasagem de Base" (knowledge gap)
+    - Lowest engagement (study hours + attendance) among remaining → "Falta de Engajamento"
+    - Remaining cluster → "Dificuldade Conceitual" (conceptual difficulty)
+
+    Using a priority queue approach avoids label collision when the lowest-scoring
+    cluster also has the lowest engagement.
     """
-    score_means = centers[:, :4].mean(axis=1)   # math, reading, writing, science
+    score_means = centers[:, :4].mean(axis=1)     # math, reading, writing, science
     engagement_means = centers[:, 4:].mean(axis=1)  # study_hours, attendance
 
-    sorted_score = np.argsort(score_means)   # ascending: worst → best
-    sorted_engage = np.argsort(engagement_means)  # ascending: least → most
-
+    unassigned = set(range(len(centers)))
     label_map = {}
-    label_map[sorted_score[0]] = "Defasagem de Base"
-    label_map[sorted_engage[0]] = "Falta de Engajamento"
-    for idx in range(len(centers)):
-        if idx not in label_map:
-            label_map[idx] = "Dificuldade Conceitual"
+
+    # Priority 1: lowest scores → Defasagem de Base
+    worst_score_idx = int(np.argmin(score_means))
+    label_map[worst_score_idx] = "Defasagem de Base"
+    unassigned.discard(worst_score_idx)
+
+    # Priority 2: among remaining, lowest engagement → Falta de Engajamento
+    if unassigned:
+        remaining = list(unassigned)
+        least_engaged = remaining[int(np.argmin(engagement_means[remaining]))]
+        label_map[least_engaged] = "Falta de Engajamento"
+        unassigned.discard(least_engaged)
+
+    # Priority 3: leftover cluster → Dificuldade Conceitual
+    for idx in unassigned:
+        label_map[idx] = "Dificuldade Conceitual"
 
     return label_map.get(cluster_idx, "Dificuldade Conceitual")
 
