@@ -30,18 +30,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
-  mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USER:}
-    password: ${MAIL_PASSWORD:}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-    from: ${MAIL_FROM:noreply@example.com}
 
   servlet:
     multipart:
@@ -66,19 +54,6 @@ app:
       secret-key: ${AWS_SECRET_ACCESS_KEY:minioadmin123}
       bucket: ${AWS_S3_BUCKET:demo-bucket}
       endpoint: ${AWS_ENDPOINT:http://localhost:9000}
-
-  mercadopago:
-    access-token: ${MERCADOPAGO_ACCESS_TOKEN:}
-
-  google-maps:
-    api-key: ${GOOGLE_MAPS_API_KEY:}
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    operationsSorter: method
 
 management:
   endpoints:
