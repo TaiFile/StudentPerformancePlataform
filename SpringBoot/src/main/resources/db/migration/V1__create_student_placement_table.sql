@@ -1,0 +1,21 @@
+CREATE TABLE student_placement (
+    id                       BIGSERIAL    PRIMARY KEY,
+    branch                   VARCHAR(20)  NOT NULL,
+    college_tier             VARCHAR(10)  NOT NULL,
+    cgpa                     NUMERIC(4,2) NOT NULL,
+    backlogs                 INT          NOT NULL DEFAULT 0,
+    coding_skills            NUMERIC(3,1) NOT NULL,
+    dsa_score                NUMERIC(3,1) NOT NULL,
+    aptitude_score           NUMERIC(4,1) NOT NULL,
+    communication_skills     NUMERIC(3,1) NOT NULL,
+    ml_knowledge             NUMERIC(3,1) NOT NULL,
+    system_design            NUMERIC(3,1) NOT NULL,
+    internships              INT          NOT NULL DEFAULT 0,
+    projects_count           INT          NOT NULL DEFAULT 0,
+    certifications           INT          NOT NULL DEFAULT 0,
+    hackathons               INT          NOT NULL DEFAULT 0,
+    open_source_contributions INT         NOT NULL DEFAULT 0,
+    extracurriculars         INT          NOT NULL DEFAULT 0,
+    placement_status         INT          NOT NULL DEFAULT 0,
+    salary_package_lpa       NUMERIC(5,2)
+);
